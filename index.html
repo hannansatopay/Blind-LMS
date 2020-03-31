@@ -18,9 +18,7 @@
   <script>
     document.addEventListener('deviceready', function() {
 
-      if (!localStorage.formfilled) {
-        localStorage.setItem("formfilled", 0);
-      } else {
+      if (localStorage.formfilled == "1") {
         window.location.href = "home.html";
       }
 

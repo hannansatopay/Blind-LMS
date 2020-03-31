@@ -23,7 +23,7 @@ document.addEventListener('deviceready', function() {
         setTimeout(function() {
           localStorage.clear();
           localStorage.setItem("formfilled", "1");
-          window.location.href = "index.html";
+          window.location.href = "home.html";
         }, 3000);
       } else {
         localStorage.setItem("question", parseInt(localStorage.question) + 1);
@@ -49,9 +49,9 @@ document.addEventListener('deviceready', function() {
   $("#score").text(localStorage.getItem("score"));
 
   var say = $("#question").text() + " Option A, " +
-    $("#option1").text() + " Option B, " +
-    $("#option2").text() + " Option C, " +
-    $("#option3").text() + " Option D, " +
+    $("#option1").text() + ". Option B, " +
+    $("#option2").text() + ". Option C, " +
+    $("#option3").text() + ". Option D, " +
     $("#option4").text();
 
   TTS.speak({
