@@ -61,7 +61,7 @@
       $("#question").text(questions[parseInt(localStorage.getItem("formq"))]);
 
       TTS.speak({
-        text: questions[parseInt(localStorage.question)],
+        text: questions[parseInt(localStorage.formq)],
         locale: 'en-IN'
       }).then(function() {
           window.plugins.speechRecognition.isRecognitionAvailable(function(available) {

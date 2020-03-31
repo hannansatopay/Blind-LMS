@@ -16,14 +16,13 @@
 
   <script>
     document.addEventListener('deviceready', function() {
-      var openquestion = "Welcome! Say 1 for timetable or 2 for exam.";
+      var openquestion = "Welcome! Do you want to see your timetable or give exam exam.";
 
       function startRecognition() {
         window.plugins.speechRecognition.startListening(function(result) {
-          if (result[0] == "1") {
+          if (result[0].toLowerCase().includes("time table")) {
             window.open("timetable.html", "_self");
-          }
-          if (result[0] == "2") {
+          } else if (result[0].toLowerCase().includes("exam")) {
             window.open("quiz.html", "_self");
           } else {
             TTS.speak({
