@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="data: gap: https://ssl.gstatic.com 'unsafe-eval'; user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi">
+  <title>Home</title>
+  <script src="jquery.min.js"></script>
+  <script type="text/javascript" src="cordova.js"></script>
+</head>
+
+<body>
+  <div>
+    <p id="question"></p>
+  </div>
+
+  <script>
+    document.addEventListener('deviceready', function() {
+      var openquestion = "Welcome! Say 1 for timetable or 2 for exam.";
+
+      function startRecognition() {
+        window.plugins.speechRecognition.startListening(function(result) {
+          if (result[0] == "1") {
+            window.open("timetable.html", "_self");
+          }
+          if (result[0] == "2") {
+            window.open("quiz.html", "_self");
+          } else {
+            TTS.speak({
+              text: "Please say a valid response!",
+              locale: 'en-IN'
+            }).then(function() {
+              window.open("home.html", "_self");
+            });
+          }
+        }, {
+          language: "en-US",
+          showPopup: true
+        });
+      }
+
+      $("#question").text(openquestion);
+
+      TTS.speak({
+        text: openquestion,
+        locale: 'en-IN'
+      }).then(function() {
+        window.plugins.speechRecognition.isRecognitionAvailable(function(available) {
+          window.plugins.speechRecognition.hasPermission(function(isGranted) {
+            if (isGranted) {
+              startRecognition();
+            } else {
+              window.plugins.speechRecognition.requestPermission(function() {
+                startRecognition();
+              }, function(err) {
+                console.log(err);
+              });
+            }
+          }, function(err) {
+            console.log(err);
+          });
+        }, function(err) {
+          console.log(err);
+        });
+      });
+    });
+  </script>
+
+</body>
+
+</html>

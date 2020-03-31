@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="data: gap: https://ssl.gstatic.com 'unsafe-eval'; user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi">
+  <title>Form</title>
+  <script src="jquery.min.js"></script>
+  <script type="text/javascript" src="cordova.js"></script>
+</head>
+
+<body>
+  <div>
+    <p id="question"></p>
+    <textarea id="answer"></textarea>
+  </div>
+
+  <script>
+    document.addEventListener('deviceready', function() {
+
+      if (!localStorage.formfilled) {
+        localStorage.setItem("formfilled", 0);
+      } else {
+        window.location.href = "home.html";
+      }
+
+      if (!localStorage.formq) {
+        localStorage.setItem("formq", 0);
+      }
+
+      var questions = ["What is your first name?", "What is your city?", "What is your age?"];
+
+      var nques = questions.length;
+
+      function startRecognition() {
+        window.plugins.speechRecognition.startListening(function(result) {
+          $("#answer").text(result[0]);
+          if (parseInt(localStorage.getItem("formq")) == nques - 1) {
+            TTS.speak({
+              text: "Thank you for your information!",
+              locale: 'en-IN'
+            });
+            setTimeout(function() {
+              localStorage.clear();
+              localStorage.setItem("formfilled", "1");
+              window.location.href = "home.html";
+            }, 3000);
+          }
+          else {
+            localStorage.setItem("formq", parseInt(localStorage.getItem("formq")) + 1);
+            window.location.href = "index.html";
+          }
+        }, function(err) {
+          console.error(err);
+        }, {
+          language: "en-US",
+          showPopup: true
+        });
+      }
+
+      $("#question").text(questions[parseInt(localStorage.getItem("formq"))]);
+
+      TTS.speak({
+        text: questions[parseInt(localStorage.question)],
+        locale: 'en-IN'
+      }).then(function() {
+          window.plugins.speechRecognition.isRecognitionAvailable(function(available) {
+            window.plugins.speechRecognition.hasPermission(function(isGranted) {
+              if (isGranted) {
+                startRecognition();
+              } else {
+                window.plugins.speechRecognition.requestPermission(function() {
+                  startRecognition();
+                }, function(err) {
+                  console.log(err);
+                });
+              }
+            }, function(err) {
+              console.log(err);
+            });
+          }, function(err) {
+            console.log(err);
+          });
+      });
+    });
+  </script>
+
+</body>
+
+</html>

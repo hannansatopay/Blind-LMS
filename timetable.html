@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
+  <script src="jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-firestore.js"></script>
+  <script src="cordova.js"></script>
+</head>
+
+<body>
+  <h2 id="display"></h2>
+  <script>
+    firebase.initializeApp({
+      apiKey: "AIzaSyATx6Cg3XvJjazXAmuyUeRrf5tMjtm1Obg",
+      authDomain: "schedule-7dbb6.firebaseapp.com",
+      databaseURL: "https://schedule-7dbb6.firebaseio.com",
+      projectId: "schedule-7dbb6",
+      storageBucket: "schedule-7dbb6.appspot.com",
+      messagingSenderId: "846585123005",
+      appId: "1:846585123005:web:c3e132c2f8370a2eada7d4",
+      measurementId: "G-486WT75QTN"
+    });
+
+    document.addEventListener('deviceready', function() {
+      var db = firebase.firestore();
+      var d = new Date();
+      var day = d.getDay();
+      var hours = d.getHours();
+      var result;
+      var docRef;
+
+      var arr = [];
+
+      if ((hours < 9) || (hours > 13)) {
+        hours = 9;
+        day = day;
+      } else if (day > 5) {
+        hours = hours;
+        day = 1;
+      } else {
+        hours = hours + 1;
+        day = day;
+      }
+
+      docRef = db.collection("tt").doc(String(day));
+
+      docRef.get().then(function(doc) {
+        if (doc.exists) {
+          arr.push(doc.data());
+          result = arr[0][String(hours)];
+          var nday = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+          var say = "You have next lecture for subject " + result + " at " + hours + " on " + nday[day - 1];
+          var bk = "Next is your break period";
+          if (result == "break") {
+            $("#display").text(bk);
+            TTS.speak({
+              text: bk,
+              locale: 'en-US'
+            });
+          } else {
+            $("#display").text(say);
+            TTS.speak({
+              text: say,
+              locale: 'en-US'
+            });
+          }
+          console.log(result);
+        } else {
+          console.log("No such document!");
+        }
+      }).catch(function(error) {
+        console.log("Error getting document:", error);
+      });
+    });
+  </script>
+</body>
+
+</html>
