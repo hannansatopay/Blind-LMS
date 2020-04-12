@@ -81,11 +81,10 @@
               localStorage.setItem("formfilled", "1");
               var answer = localStorage.getItem("answer").split(",");
               db.collection("Profiles").add({
-                  name: answer[0],
-                  city: answer[1],
-                  age: answer[2]
-              })
-              .then(function(docRef) {
+                  name: answer[1],
+                  city: answer[2],
+                  age: answer[3]
+              }).then(function(docRef) {
                   localStorage.removeItem("answer");
                   localStorage.setItem("ID", docRef.id);
                   window.location.href = "home.html";

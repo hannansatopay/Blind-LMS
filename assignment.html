@@ -1,0 +1,104 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height">
+  <title>ASSIGNMENT</title>
+  <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
+  <script src="jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-firestore.js"></script>
+  <script type="text/javascript" src="cordova.js"></script>
+</head>
+
+<body>
+  <h1 style="text-align:center;">ASSIGNMENT</h1>
+  <div style="font-weight:normal;font-size:20px;">
+    <p id="question"></p>
+    <p id="answer"></p>
+  </div>
+  <script>
+    document.addEventListener('deviceready', function() {
+
+      if (!localStorage.getItem("question")) {
+        localStorage.setItem("question", "0");
+        localStorage.setItem("answer", "");
+      }
+
+      firebase.initializeApp({
+        apiKey: "AIzaSyCg0UKJXmCG3qPKhuJsyP3UjFYT5mBtmkw",
+        authDomain: "blind-lms.firebaseapp.com",
+        databaseURL: "https://blind-lms.firebaseio.com",
+        projectId: "blind-lms",
+        storageBucket: "blind-lms.appspot.com",
+        messagingSenderId: "782911150306",
+        appId: "1:782911150306:web:6b1bdc8c38a77a11e566bb"
+      });
+
+      var db = firebase.firestore();
+      var docRef = db.collection("Tests").doc("Assignment");
+
+      docRef.get().then(function(doc) {
+        if (doc.exists) {
+          var nques = Object.keys(doc.data()).length;
+
+          var n = parseInt(localStorage.getItem("question"));
+
+          $("#question").text(doc.data()[n]);
+
+          var speak = $("#question").text();
+
+          TTS.speak({
+            text: speak,
+            locale: 'en-IN'
+          }).then(function() {
+            window.plugins.speechRecognition.isRecognitionAvailable(function(available) {
+              window.plugins.speechRecognition.hasPermission(function(isGranted) {
+                if (isGranted) {
+                  startRecognition();
+                } else {
+                  window.plugins.speechRecognition.requestPermission(function() {
+                    startRecognition();
+                  }, function(err) {
+                    console.log(err);
+                  });
+                }
+              }, function(err) {
+                console.log(err);
+              });
+            }, function(err) {
+              console.log(err);
+            });
+          });
+
+          function startRecognition() {
+            window.plugins.speechRecognition.startListening(function(result) {
+              localStorage.setItem("answer", localStorage.getItem("answer") + "," + result[0]);
+              if (parseInt(localStorage.question) == nques - 1) {
+                setTimeout(function() {
+                  localStorage.removeItem("question");
+                  var docRef = db.collection('Profiles').doc(localStorage.getItem("ID"));
+                  docRef.set({
+                    assignment: localStorage.getItem("answer")
+                  }, {
+                    merge: true
+                  }).then(function() {
+                    localStorage.removeItem("answer");
+                    window.location.href = "home.html";
+                  });
+                }, 5000);
+              } else {
+                localStorage.setItem("question", parseInt(localStorage.question) + 1);
+                window.location.href = "assignment.html";
+              }
+            }, {
+              language: "en-US",
+              showPopup: true
+            });
+          }
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
