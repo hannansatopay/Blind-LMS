@@ -1,47 +1,84 @@
-<!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="data: gap: https://ssl.gstatic.com 'unsafe-eval'; user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi">
   <title>Home</title>
+  <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
   <script src="jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-firestore.js"></script>
   <script type="text/javascript" src="cordova.js"></script>
 </head>
 
 <body>
   <div>
-    <p id="question"></p>
+    <p id="query"></p>
   </div>
 
   <script>
     document.addEventListener('deviceready', function() {
-      var openquestion = "Welcome! Do you want to see your timetable or give your exam.";
 
-      function startRecognition() {
-        window.plugins.speechRecognition.startListening(function(result) {
-          if (result[0].toLowerCase().includes("time table")) {
-            window.open("timetable.html", "_self");
-          } else if (result[0].toLowerCase().includes("exam")) {
-            window.open("quiz.html", "_self");
-          } else {
-            TTS.speak({
-              text: "Please say a valid response!",
-              locale: 'en-IN'
-            }).then(function() {
-              window.open("home.html", "_self");
-            });
-          }
+      firebase.initializeApp({
+        apiKey: "AIzaSyCg0UKJXmCG3qPKhuJsyP3UjFYT5mBtmkw",
+        authDomain: "blind-lms.firebaseapp.com",
+        databaseURL: "https://blind-lms.firebaseio.com",
+        projectId: "blind-lms",
+        storageBucket: "blind-lms.appspot.com",
+        messagingSenderId: "782911150306",
+        appId: "1:782911150306:web:6b1bdc8c38a77a11e566bb"
+      });
+
+      var db = firebase.firestore();
+
+      PushNotification.createChannel(
+        function() {
+          console.log('success');
+        },
+        function() {
+          console.log('error');
         }, {
-          language: "en-US",
-          showPopup: true
-        });
-      }
+          id: 'PushPluginChannel',
+          description: 'PushPluginChannel',
+          importance: 5,
+          vibration: true,
+          sound: 'default',
+          visibility: 1
+        }
+      );
 
-      $("#question").text(openquestion);
+      var push = PushNotification.init({
+        android: {
+          iconColor: 'blue'
+        }
+      });
+
+      push.clearAllNotifications(
+        function() {
+          console.log('success');
+        },
+        function() {
+          console.log('error');
+        }
+      );
+
+      push.on('registration', function(data) {
+        var docRef = db.collection('Profiles').doc(localStorage.getItem("ID"));
+        docRef.set({notificationtoken: data.registrationId}, {merge: true});
+      });
+
+      push.on('notification', function(data) {
+        if ('info' in data.additionalData) {
+          console.log(data.additionalData.info);
+        }
+      });
+
+      var query = "Welcome! Do you want to see your timetable, submit assignment or give your final exam?";
+      //var query = "Welcome! Do you want to see your timetable or submit your assignment?";
+      //var query = "Welcome! Do you want to see your timetable or give your final exam?";
+      $("#query").text(query);
 
       TTS.speak({
-        text: openquestion,
+        text: query,
         locale: 'en-IN'
       }).then(function() {
         window.plugins.speechRecognition.isRecognitionAvailable(function(available) {
@@ -62,6 +99,28 @@
           console.log(err);
         });
       });
+
+      function startRecognition() {
+        window.plugins.speechRecognition.startListening(function(result) {
+          if (result[0].toLowerCase().includes("table")) {
+            window.open("timetable.html", "_self");
+          } else if (result[0].toLowerCase().includes("exam")) {
+            window.open("quiz.html", "_self");
+          } else if (result[0].toLowerCase().includes("assignment")) {
+            window.open("assignment.html", "_self");
+          } else {
+            TTS.speak({
+              text: "Please say a valid response!",
+              locale: 'en-IN'
+            }).then(function() {
+              window.open("home.html", "_self");
+            });
+          }
+        }, {
+          language: "en-US",
+          showPopup: true
+        });
+      }
     });
   </script>
 

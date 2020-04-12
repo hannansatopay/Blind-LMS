@@ -1,8 +1,9 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-  <title></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height">
+  <title>TIMETABLE</title>
   <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
   <script src="jquery.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-firestore.js"></script>
@@ -13,14 +14,13 @@
   <h2 id="display"></h2>
   <script>
     firebase.initializeApp({
-      apiKey: "AIzaSyATx6Cg3XvJjazXAmuyUeRrf5tMjtm1Obg",
-      authDomain: "schedule-7dbb6.firebaseapp.com",
-      databaseURL: "https://schedule-7dbb6.firebaseio.com",
-      projectId: "schedule-7dbb6",
-      storageBucket: "schedule-7dbb6.appspot.com",
-      messagingSenderId: "846585123005",
-      appId: "1:846585123005:web:c3e132c2f8370a2eada7d4",
-      measurementId: "G-486WT75QTN"
+      apiKey: "AIzaSyCg0UKJXmCG3qPKhuJsyP3UjFYT5mBtmkw",
+      authDomain: "blind-lms.firebaseapp.com",
+      databaseURL: "https://blind-lms.firebaseio.com",
+      projectId: "blind-lms",
+      storageBucket: "blind-lms.appspot.com",
+      messagingSenderId: "782911150306",
+      appId: "1:782911150306:web:6b1bdc8c38a77a11e566bb"
     });
 
     document.addEventListener('deviceready', function() {
@@ -29,7 +29,6 @@
       var day = d.getDay();
       var hours = d.getHours();
       var result;
-      var docRef;
 
       var arr = [];
 
@@ -44,25 +43,25 @@
         day = day;
       }
 
-      docRef = db.collection("tt").doc(String(day));
+      var docRef = db.collection("Timetable").doc(String(day));
 
       docRef.get().then(function(doc) {
         if (doc.exists) {
           arr.push(doc.data());
           result = arr[0][String(hours)];
           var nday = ["monday", "tuesday", "wednesday", "thursday", "friday"];
-          var say = "You have next lecture for subject " + result + " at " + hours + " on " + nday[day - 1];
-          var bk = "Next is your break period";
           if (result == "break") {
-            $("#display").text(bk);
+            var speak = "Next is your break period";
+            $("#display").text(speak);
             TTS.speak({
-              text: bk,
+              text: speak,
               locale: 'en-IN'
             });
           } else {
-            $("#display").text(say);
+            var speak = "You have next lecture for the subject of " + result + " at " + hours + " on " + nday[day - 1];
+            $("#display").text(speak);
             TTS.speak({
-              text: say,
+              text: speak,
               locale: 'en-IN'
             });
           }
@@ -73,6 +72,7 @@
       }).catch(function(error) {
         console.log("Error getting document:", error);
       });
+
     });
   </script>
 </body>

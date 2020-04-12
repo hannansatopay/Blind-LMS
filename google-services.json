@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "937035670725",
-    "firebase_url": "https://push-notify-da06c.firebaseio.com",
-    "project_id": "push-notify-da06c",
-    "storage_bucket": "push-notify-da06c.appspot.com"
+    "project_number": "782911150306",
+    "firebase_url": "https://blind-lms.firebaseio.com",
+    "project_id": "blind-lms",
+    "storage_bucket": "blind-lms.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:937035670725:android:e1f1fe3ce0fd7634bc3cac",
+        "mobilesdk_app_id": "1:782911150306:android:e8fb2b18a5591c22e566bb",
         "android_client_info": {
-          "package_name": "com.student.pushexample"
+          "package_name": "com.blind.lms"
         }
       },
       "oauth_client": [
         {
-          "client_id": "937035670725-f53d79d312ut5qj7pohm1313doeds8oh.apps.googleusercontent.com",
+          "client_id": "782911150306-ivod27k768nv9t44e0rsakvsen67cjo4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCL3Mj_TjCKLQSL-s5fhCBSjElbZNSgQkM"
+          "current_key": "AIzaSyAMurH205s6ygf3ssKlNahv4bvdeKkCm5U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "937035670725-f53d79d312ut5qj7pohm1313doeds8oh.apps.googleusercontent.com",
+              "client_id": "782911150306-ivod27k768nv9t44e0rsakvsen67cjo4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

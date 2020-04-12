@@ -1,17 +1,17 @@
-<!Doctype HTML>
 <html>
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="data: gap: https://ssl.gstatic.com 'unsafe-eval'; user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height">
   <title>QUIZ</title>
-  <link href="https://fonts.googleapis.com/css?family=Macondo" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
   <script src="jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-firestore.js"></script>
   <script type="text/javascript" src="cordova.js"></script>
 </head>
 
 <body>
-  <h1 style="text-align:center;">QUIZ<h1>
+  <h1 style="text-align:center;">QUIZ</h1>
   <div style="font-weight:normal;font-size:20px;">
     <p id="question"></p>
     <p id="option1"></p>
@@ -19,10 +19,98 @@
     <p id="option3"></p>
     <p id="option4"></p>
     <p id="answer"></p>
-    <p id="score"></p>
   </div>
-  <script type="text/javascript" src="questions.js"></script>
-  <script type="text/javascript" src="quiz.js"></script>
+  <script>
+    document.addEventListener('deviceready', function() {
+
+      if (!localStorage.getItem("question")) {
+        localStorage.setItem("question", "0");
+        localStorage.setItem("score", "0");
+      }
+
+      firebase.initializeApp({
+        apiKey: "AIzaSyCg0UKJXmCG3qPKhuJsyP3UjFYT5mBtmkw",
+        authDomain: "blind-lms.firebaseapp.com",
+        databaseURL: "https://blind-lms.firebaseio.com",
+        projectId: "blind-lms",
+        storageBucket: "blind-lms.appspot.com",
+        messagingSenderId: "782911150306",
+        appId: "1:782911150306:web:6b1bdc8c38a77a11e566bb"
+      });
+
+      var db = firebase.firestore();
+      var docRef = db.collection("Tests").doc("Quiz");
+
+      docRef.get().then(function(doc) {
+        if (doc.exists) {
+          var nques = Object.keys(doc.data()).length;
+
+          var n = parseInt(localStorage.getItem("question"));
+
+          $("#question").text(doc.data()[n][0]);
+          $("#option1").text(doc.data()[n][1]);
+          $("#option2").text(doc.data()[n][2]);
+          $("#option3").text(doc.data()[n][3]);
+          $("#option4").text(doc.data()[n][4]);
+          $("#answer").text(doc.data()[n][5]);
+
+          var speak = $("#question").text() +
+            " Option A, " + $("#option1").text() +
+            " Option B, " + $("#option1").text() +
+            " Option C, " + $("#option1").text() +
+            " Option D, " + $("#option1").text();
+
+          TTS.speak({
+            text: speak,
+            locale: 'en-IN'
+          }).then(function() {
+            window.plugins.speechRecognition.isRecognitionAvailable(function(available) {
+              window.plugins.speechRecognition.hasPermission(function(isGranted) {
+                if (isGranted) {
+                  startRecognition();
+                } else {
+                  window.plugins.speechRecognition.requestPermission(function() {
+                    startRecognition();
+                  }, function(err) {
+                    console.log(err);
+                  });
+                }
+              }, function(err) {
+                console.log(err);
+              });
+            }, function(err) {
+              console.log(err);
+            });
+          });
+
+          function startRecognition() {
+            window.plugins.speechRecognition.startListening(function(result) {
+              if (result[0].toLowerCase().includes($("#answer").text().toLowerCase())) {
+                localStorage.setItem("score", parseInt(localStorage.score) + 1);
+              }
+              if (parseInt(localStorage.question) == nques - 1) {
+                TTS.speak({
+                  text: "Your final score is " + String(localStorage.score),
+                  locale: 'en-IN'
+                });
+                setTimeout(function() {
+                  localStorage.removeItem("question");
+                  localStorage.removeItem("score");
+                  window.location.href = "home.html";
+                }, 5000);
+              } else {
+                localStorage.setItem("question", parseInt(localStorage.question) + 1);
+                window.location.href = "quiz.html";
+              }
+            }, {
+              language: "en-US",
+              showPopup: true
+            });
+          }
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>
