@@ -15,10 +15,8 @@
     <p id="question"></p>
     <p id="answer"></p>
   </div>
-
   <script>
     document.addEventListener('deviceready', function() {
-
       firebase.initializeApp({
         apiKey: "AIzaSyCg0UKJXmCG3qPKhuJsyP3UjFYT5mBtmkw",
         authDomain: "blind-lms.firebaseapp.com",
@@ -82,7 +80,7 @@
               localStorage.removeItem("formq");
               localStorage.setItem("formfilled", "1");
               var answer = localStorage.getItem("answer").split(",");
-              db.collection("cities").add({
+              db.collection("Profiles").add({
                   name: answer[0],
                   city: answer[1],
                   age: answer[2]

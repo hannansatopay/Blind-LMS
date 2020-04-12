@@ -13,17 +13,16 @@
 <body>
   <h2 id="display"></h2>
   <script>
-    firebase.initializeApp({
-      apiKey: "AIzaSyCg0UKJXmCG3qPKhuJsyP3UjFYT5mBtmkw",
-      authDomain: "blind-lms.firebaseapp.com",
-      databaseURL: "https://blind-lms.firebaseio.com",
-      projectId: "blind-lms",
-      storageBucket: "blind-lms.appspot.com",
-      messagingSenderId: "782911150306",
-      appId: "1:782911150306:web:6b1bdc8c38a77a11e566bb"
-    });
-
     document.addEventListener('deviceready', function() {
+      firebase.initializeApp({
+        apiKey: "AIzaSyCg0UKJXmCG3qPKhuJsyP3UjFYT5mBtmkw",
+        authDomain: "blind-lms.firebaseapp.com",
+        databaseURL: "https://blind-lms.firebaseio.com",
+        projectId: "blind-lms",
+        storageBucket: "blind-lms.appspot.com",
+        messagingSenderId: "782911150306",
+        appId: "1:782911150306:web:6b1bdc8c38a77a11e566bb"
+      });
       var db = firebase.firestore();
       var d = new Date();
       var day = d.getDay();
@@ -32,15 +31,20 @@
 
       var arr = [];
 
-      if ((hours < 9) || (hours > 13)) {
-        hours = 9;
-        day = day;
-      } else if (day > 5) {
-        hours = hours;
+      if ((day == 6) || (day == 0)) {
         day = 1;
+        hours = 9;
       } else {
-        hours = hours + 1;
-        day = day;
+        if ((hours >= 9) || (hours < 13)) {
+          day = day;
+          hours = hours + 1;
+        } else if (hours < 9) {
+          day = day;
+          hours = 9;
+        } else if (hours >= 13) {
+          day = day + 1;
+          hours = 9;
+        }
       }
 
       var docRef = db.collection("Timetable").doc(String(day));
@@ -63,9 +67,10 @@
             TTS.speak({
               text: speak,
               locale: 'en-IN'
+            }).then(function() {
+              window.location.href = "home.html";
             });
           }
-          console.log(result);
         } else {
           console.log("No such document!");
         }

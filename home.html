@@ -48,7 +48,7 @@
 
       var push = PushNotification.init({
         android: {
-          iconColor: 'blue'
+          iconColor: 'black'
         }
       });
 
@@ -69,6 +69,10 @@
       push.on('notification', function(data) {
         if ('info' in data.additionalData) {
           console.log(data.additionalData.info);
+          TTS.speak({
+            text: data.additionalData.info,
+            locale: 'en-IN'
+          })
         }
       });
 
