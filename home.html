@@ -72,37 +72,43 @@
           TTS.speak({
             text: data.additionalData.info,
             locale: 'en-IN'
-          })
+          }).then(function() {
+            welcome();
+          });
         }
       });
 
-      var query = "Welcome! Do you want to see your timetable, submit assignment or give your final exam?";
-      //var query = "Welcome! Do you want to see your timetable or submit your assignment?";
-      //var query = "Welcome! Do you want to see your timetable or give your final exam?";
-      $("#query").text(query);
+      function welcome() {
+        var query = "Welcome! Do you want to see your timetable, submit assignment or give your final exam?";
+        //var query = "Welcome! Do you want to see your timetable or submit your assignment?";
+        //var query = "Welcome! Do you want to see your timetable or give your final exam?";
+        $("#query").text(query);
 
-      TTS.speak({
-        text: query,
-        locale: 'en-IN'
-      }).then(function() {
-        window.plugins.speechRecognition.isRecognitionAvailable(function(available) {
-          window.plugins.speechRecognition.hasPermission(function(isGranted) {
-            if (isGranted) {
-              startRecognition();
-            } else {
-              window.plugins.speechRecognition.requestPermission(function() {
+        TTS.speak({
+          text: query,
+          locale: 'en-IN'
+        }).then(function() {
+          window.plugins.speechRecognition.isRecognitionAvailable(function(available) {
+            window.plugins.speechRecognition.hasPermission(function(isGranted) {
+              if (isGranted) {
                 startRecognition();
-              }, function(err) {
-                console.log(err);
-              });
-            }
+              } else {
+                window.plugins.speechRecognition.requestPermission(function() {
+                  startRecognition();
+                }, function(err) {
+                  console.log(err);
+                });
+              }
+            }, function(err) {
+              console.log(err);
+            });
           }, function(err) {
             console.log(err);
           });
-        }, function(err) {
-          console.log(err);
         });
-      });
+      }
+
+      welcome();
 
       function startRecognition() {
         window.plugins.speechRecognition.startListening(function(result) {
