@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "782911150306",
-    "firebase_url": "https://blind-lms.firebaseio.com",
-    "project_id": "blind-lms",
-    "storage_bucket": "blind-lms.appspot.com"
+    "project_number": "1004835508954",
+    "firebase_url": "https://nayan-a911d.firebaseio.com",
+    "project_id": "nayan-a911d",
+    "storage_bucket": "nayan-a911d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:782911150306:android:e8fb2b18a5591c22e566bb",
+        "mobilesdk_app_id": "1:1004835508954:android:1f61f8ee86db3fa3188be3",
         "android_client_info": {
-          "package_name": "com.blind.lms"
+          "package_name": "com.nayan.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "782911150306-ivod27k768nv9t44e0rsakvsen67cjo4.apps.googleusercontent.com",
+          "client_id": "1004835508954-bqhqovtkh3bmhnndjgn3nt7ls9qken28.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAMurH205s6ygf3ssKlNahv4bvdeKkCm5U"
+          "current_key": "AIzaSyDctrIXpKSJsg3V8_CDL0NgPAWeXypqvOo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "782911150306-ivod27k768nv9t44e0rsakvsen67cjo4.apps.googleusercontent.com",
+              "client_id": "1004835508954-bqhqovtkh3bmhnndjgn3nt7ls9qken28.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

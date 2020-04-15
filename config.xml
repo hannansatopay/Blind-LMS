@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.blind.lms" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>Blind LMS</name>
+<widget id="com.nayan.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>Nayan</name>
     <description>
-        Blind LMS
+        Nayan
     </description>
-    <author email="ektamishra335@gmail.com">
-        Shweta Mishra || Hannan Satopay
+    <author email="nayanapp200@gmail.com">
+        Nayan
     </author>
 	<preference name="phonegap-version" value="cli-9.0.0" />
 	<preference name="android-minSdkVersion"      value="19" />
 
-    <content src="index.html" />
+    <content src="login.html" />
     <plugin name="cordova-plugin-whitelist"/>
     <plugin name="cordova-plugin-camera"              source="npm" />
     <plugin name="cordova-plugin-media-capture"       source="npm" />
@@ -22,7 +22,7 @@
      <resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
 	<plugin name="phonegap-plugin-push" source="npm">
-		<param name="SENDER_ID" value="782911150306" />
+		<param name="SENDER_ID" value="1004835508954" />
 	</plugin>
     <platform name="android">
       <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">

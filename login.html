@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi">
-  <title>Form</title>
+  <title>Login</title>
   <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
   <script src="jquery.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-firestore.js"></script>
@@ -13,7 +13,7 @@
 <body>
   <div>
     <p id="question"></p>
-    <p id="answer"></p>
+    <p id="details"></p>
   </div>
   <script>
     document.addEventListener('deviceready', function() {
@@ -33,19 +33,19 @@
         window.location.href = "home.html";
       }
 
-      if (!localStorage.getItem("formq")) {
-        localStorage.setItem("formq", "0");
-        localStorage.setItem("answer", "");
+      if (!localStorage.getItem("loginq")) {
+        localStorage.setItem("loginq", "0");
+        localStorage.setItem("logindetails", "");
       }
 
-      var questions = ["What is your first name?", "What is your city?", "What is your age?"];
+      var questions = ["What is your phone number?", "What is your password?"];
 
       var nques = questions.length;
 
-      $("#question").text(questions[parseInt(localStorage.getItem("formq"))]);
+      $("#question").text(questions[parseInt(localStorage.getItem("loginq"))]);
 
       TTS.speak({
-        text: questions[parseInt(localStorage.formq)],
+        text: questions[parseInt(localStorage.loginq)],
         locale: 'en-IN'
       }).then(function() {
         window.plugins.speechRecognition.isRecognitionAvailable(function(available) {
@@ -69,31 +69,43 @@
 
       function startRecognition() {
         window.plugins.speechRecognition.startListening(function(result) {
-          $("#answer").text(result[0]);
-          localStorage.setItem("answer", localStorage.getItem("answer") + "," + result[0]);
-          if (parseInt(localStorage.getItem("formq")) == nques - 1) {
-            TTS.speak({
-              text: "Thank you for your information!",
-              locale: 'en-IN'
-            });
+          $("#details").text(result[0]);
+          localStorage.setItem("logindetails", localStorage.getItem("logindetails") + "," + result[0]);
+          if (parseInt(localStorage.getItem("loginq")) == nques - 1) {
             setTimeout(function() {
-              localStorage.removeItem("formq");
-              localStorage.setItem("formfilled", "1");
-              var answer = localStorage.getItem("answer").split(",");
-              db.collection("Profiles").document(localStorage.getItem("ID")).add({
-                name: answer[1],
-                city: answer[2],
-                age: answer[3],
-                password: localStorage.getItem("password")
-              }).then(function(docRef) {
-                localStorage.removeItem("answer");
-                window.location.href = "home.html";
+              localStorage.removeItem("loginq");
+              var details = localStorage.getItem("logindetails").split(",");
+              mobile = details[1].replace(/ /g, "");
+              password = details[2].replace(/ /g, "");
+              var docRef = db.collection("Profiles").doc(mobile);
+              docRef.get().then(function(doc) {
+                if (doc.exists) {
+                  if (password == doc.data()["password"]) {
+                    localStorage.removeItem("logindetails");
+                    localStorage.setItem("formfilled", "1");
+                    localStorage.setItem("ID", mobile);
+                    window.location.href = "home.html";
+                  } else {
+                    localStorage.removeItem("logindetails");
+                    TTS.speak({
+                      text: "Incorrect password!",
+                      locale: 'en-IN'
+                    }).then(function() {
+                      window.location.href = "login.html";
+                    });
+                  }
+                } else {
+                  localStorage.removeItem("logindetails");
+                  localStorage.setItem("ID", mobile);
+                  localStorage.setItem("password", password);
+                  window.location.href = "index.html";
+                }
               });
             }, 3000);
           } else {
-            localStorage.setItem("formq", parseInt(localStorage.getItem("formq")) + 1);
+            localStorage.setItem("loginq", parseInt(localStorage.getItem("loginq")) + 1);
             setTimeout(function() {
-              window.location.href = "index.html";
+              window.location.href = "login.html";
             }, 2000);
           }
         }, function(err) {
