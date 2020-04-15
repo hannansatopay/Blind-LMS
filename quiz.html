@@ -95,7 +95,6 @@
                 });
                 setTimeout(function() {
                   localStorage.removeItem("question");
-                  localStorage.removeItem("score");
                   var docRef = db.collection('Profiles').doc(localStorage.getItem("ID"));
                   docRef.set({
                     quizscore: localStorage.getItem("score")

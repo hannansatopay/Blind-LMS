@@ -35,9 +35,9 @@
             speak = speak + "You have not given the quiz yet!";
           }
           if ('assignmentscore' in doc.data()){
-            speak = speak + "Your assignment score is " + String(doc.data()["assignmentscore"]);
+            speak = speak + " Your assignment score is " + String(doc.data()["assignmentscore"]);
           } else {
-            speak = speak + "Your evaluation is pending or you may have not given the assignment yet!";
+            speak = speak + " Your evaluation is pending or you may have not given the assignment yet!";
           }
           $("#display").text(speak);
           TTS.speak({
