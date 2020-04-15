@@ -19,13 +19,13 @@
     document.addEventListener('deviceready', function() {
 
       firebase.initializeApp({
-        apiKey: "AIzaSyCg0UKJXmCG3qPKhuJsyP3UjFYT5mBtmkw",
-        authDomain: "blind-lms.firebaseapp.com",
-        databaseURL: "https://blind-lms.firebaseio.com",
-        projectId: "blind-lms",
-        storageBucket: "blind-lms.appspot.com",
-        messagingSenderId: "782911150306",
-        appId: "1:782911150306:web:6b1bdc8c38a77a11e566bb"
+        apiKey: "AIzaSyBovViZxhmHRSTsw_MPNOjvw-wHc0B2qWU",
+        authDomain: "nayan-a911d.firebaseapp.com",
+        databaseURL: "https://nayan-a911d.firebaseio.com",
+        projectId: "nayan-a911d",
+        storageBucket: "nayan-a911d.appspot.com",
+        messagingSenderId: "1004835508954",
+        appId: "1:1004835508954:web:2aa8c7f28fc30a7b188be3"
       });
 
       var db = firebase.firestore();
@@ -79,9 +79,7 @@
       });
 
       function welcome() {
-        var query = "Welcome! Do you want to see your timetable, submit assignment or give your final exam?";
-        //var query = "Welcome! Do you want to see your timetable or submit your assignment?";
-        //var query = "Welcome! Do you want to see your timetable or give your final exam?";
+        var query = "Welcome! Do you want to see your timetable, submit assignment, give your final exam or check your result?";
         $("#query").text(query);
 
         TTS.speak({
@@ -118,6 +116,8 @@
             window.open("quiz.html", "_self");
           } else if (result[0].toLowerCase().includes("assignment")) {
             window.open("assignment.html", "_self");
+          } else if (result[0].toLowerCase().includes("result")) {
+            window.open("result.html", "_self");
           } else {
             TTS.speak({
               text: "Please say a valid response!",

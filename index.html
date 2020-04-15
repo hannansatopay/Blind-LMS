@@ -80,7 +80,7 @@
               localStorage.removeItem("formq");
               localStorage.setItem("formfilled", "1");
               var answer = localStorage.getItem("answer").split(",");
-              db.collection("Profiles").document(localStorage.getItem("ID")).add({
+              db.collection("Profiles").doc(localStorage.getItem("ID")).add({
                 name: answer[1],
                 city: answer[2],
                 age: answer[3],

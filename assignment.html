@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height">
-  <title>ASSIGNMENT</title>
+  <title>Assignment</title>
   <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
   <script src="jquery.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-firestore.js"></script>
@@ -25,13 +25,13 @@
       }
 
       firebase.initializeApp({
-        apiKey: "AIzaSyCg0UKJXmCG3qPKhuJsyP3UjFYT5mBtmkw",
-        authDomain: "blind-lms.firebaseapp.com",
-        databaseURL: "https://blind-lms.firebaseio.com",
-        projectId: "blind-lms",
-        storageBucket: "blind-lms.appspot.com",
-        messagingSenderId: "782911150306",
-        appId: "1:782911150306:web:6b1bdc8c38a77a11e566bb"
+        apiKey: "AIzaSyBovViZxhmHRSTsw_MPNOjvw-wHc0B2qWU",
+        authDomain: "nayan-a911d.firebaseapp.com",
+        databaseURL: "https://nayan-a911d.firebaseio.com",
+        projectId: "nayan-a911d",
+        storageBucket: "nayan-a911d.appspot.com",
+        messagingSenderId: "1004835508954",
+        appId: "1:1004835508954:web:2aa8c7f28fc30a7b188be3"
       });
 
       var db = firebase.firestore();
@@ -40,13 +40,9 @@
       docRef.get().then(function(doc) {
         if (doc.exists) {
           var nques = Object.keys(doc.data()).length;
-
           var n = parseInt(localStorage.getItem("question"));
-
           $("#question").text(doc.data()[n]);
-
           var speak = $("#question").text();
-
           TTS.speak({
             text: speak,
             locale: 'en-IN'

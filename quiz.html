@@ -29,13 +29,13 @@
       }
 
       firebase.initializeApp({
-        apiKey: "AIzaSyCg0UKJXmCG3qPKhuJsyP3UjFYT5mBtmkw",
-        authDomain: "blind-lms.firebaseapp.com",
-        databaseURL: "https://blind-lms.firebaseio.com",
-        projectId: "blind-lms",
-        storageBucket: "blind-lms.appspot.com",
-        messagingSenderId: "782911150306",
-        appId: "1:782911150306:web:6b1bdc8c38a77a11e566bb"
+        apiKey: "AIzaSyBovViZxhmHRSTsw_MPNOjvw-wHc0B2qWU",
+        authDomain: "nayan-a911d.firebaseapp.com",
+        databaseURL: "https://nayan-a911d.firebaseio.com",
+        projectId: "nayan-a911d",
+        storageBucket: "nayan-a911d.appspot.com",
+        messagingSenderId: "1004835508954",
+        appId: "1:1004835508954:web:2aa8c7f28fc30a7b188be3"
       });
 
       var db = firebase.firestore();
@@ -96,7 +96,15 @@
                 setTimeout(function() {
                   localStorage.removeItem("question");
                   localStorage.removeItem("score");
-                  window.location.href = "home.html";
+                  var docRef = db.collection('Profiles').doc(localStorage.getItem("ID"));
+                  docRef.set({
+                    quizscore: localStorage.getItem("score")
+                  }, {
+                    merge: true
+                  }).then(function() {
+                    localStorage.removeItem("score");
+                    window.location.href = "home.html";
+                  });
                 }, 5000);
               } else {
                 localStorage.setItem("question", parseInt(localStorage.question) + 1);
